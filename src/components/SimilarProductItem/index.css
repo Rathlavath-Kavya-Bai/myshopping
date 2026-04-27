@@ -1,0 +1,13 @@
+.min-list-container1 {
+  list-style-type: none;
+  margin: 25px;
+}
+.remaining-products-img {
+  height: 200px;
+  width: 200px;
+  border-radius: 5px;
+}
+
+.min-title {
+  font-size: 14px;
+}
