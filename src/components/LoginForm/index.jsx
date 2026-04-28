@@ -99,6 +99,10 @@ const LoginForm = () => {
         </button>
         {showSubmitError && <p className="error-message">*{errorMsg}</p>}
       </form>
+      <div>
+      <p>Username - rahul</p>
+      <p>Password - rahul@2021</p>
+      </div>
     </div>
   )
 }
