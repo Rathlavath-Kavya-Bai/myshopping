@@ -1,5 +1,5 @@
 import { ThreeDots } from 'react-loader-spinner'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Header from '../Header'
 import { Link, useParams } from 'react-router-dom'
 import Cookies from 'js-cookie'
@@ -9,16 +9,16 @@ import './index.css'
 
 const ProductItemDetails = () => {
   const { id } = useParams()
-  const [productItemList, setProductItemList] = useState({ similarProducts: [] })
+
+  const [productItemList, setProductItemList] = useState({
+    similarProducts: [],
+  })
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const [count, setCount] = useState(1)
 
-  useEffect(() => {
-    getEachListItem()
-  }, [id])
-
-  const getEachListItem = async () => {
+  // ✅ FIXED: useCallback added
+  const getEachListItem = useCallback(async () => {
     const jwtToken = Cookies.get('jwt_token')
 
     const apiUrl = `https://apis.ccbp.in/products/${id}`
@@ -63,7 +63,12 @@ const ProductItemDetails = () => {
       setIsLoading(false)
       setIsError(true)
     }
-  }
+  }, [id]) // ✅ dependency added
+
+  // ✅ FIXED: dependency updated
+  useEffect(() => {
+    getEachListItem()
+  }, [getEachListItem])
 
   const decreaseClicked = () => {
     setCount(prevCount => (prevCount > 1 ? prevCount - 1 : 1))
@@ -151,7 +156,10 @@ const ProductItemDetails = () => {
           <h1>Similar Products</h1>
           <ul className="unordered-products-container">
             {productItemList.similarProducts.map(product => (
-              <SimilarProductItem key={product.id} productDetails={product} />
+              <SimilarProductItem
+                key={product.id}
+                productDetails={product}
+              />
             ))}
           </ul>
         </div>
